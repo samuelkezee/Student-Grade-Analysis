@@ -1,4 +1,3 @@
-
 import sys
 from dataclasses import dataclass
 
@@ -41,20 +40,17 @@ class DataTransformation:
 
             num_pipeline= Pipeline(
                 steps=[
-                ("imputer",SimpleImputer(strategy="median")),
-                ("scaler",StandardScaler())
-
+                    ("imputer",SimpleImputer(strategy="median")),
+                    ("scaler",StandardScaler())
                 ]
             )
 
             cat_pipeline=Pipeline(
-
                 steps=[
-                ("imputer",SimpleImputer(strategy="most_frequent")),
-                ("one_hot_encoder",OneHotEncoder()),
-                ("scaler",StandardScaler(with_mean=False))
+                    ("imputer",SimpleImputer(strategy="most_frequent")),
+                    ("one_hot_encoder",OneHotEncoder()),
+                    ("scaler",StandardScaler(with_mean=False))
                 ]
-
             )
 
             logging.info(f"Categorical columns: {categorical_columns}")
@@ -62,12 +58,9 @@ class DataTransformation:
 
             preprocessor=ColumnTransformer(
                 [
-                ("num_pipeline",num_pipeline,numerical_columns),
-                ("cat_pipelines",cat_pipeline,categorical_columns)
-
+                    ("num_pipeline",num_pipeline,numerical_columns),
+                    ("cat_pipelines",cat_pipeline,categorical_columns)
                 ]
-
-
             )
 
             return preprocessor
@@ -76,7 +69,6 @@ class DataTransformation:
             raise CustomException(e,sys)
         
     def initiate_data_transformation(self,train_path,test_path):
-
         try:
             train_df=pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
@@ -107,7 +99,6 @@ class DataTransformation:
             Some ML pipelines or scripts want one single array for features + target.
             Makes it easier to save, load, or pass into other functions.
             After this, the array can be split back into X and y if needed, but now it’s in a ready-to-use format.'''
-
             
             train_arr = np.c_[
                 input_feature_train_arr, np.array(target_feature_train_df)
@@ -117,10 +108,8 @@ class DataTransformation:
             logging.info(f"Saved preprocessing object.")
 
             save_object(
-
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
                 obj=preprocessing_obj
-
             )
 
             return (
